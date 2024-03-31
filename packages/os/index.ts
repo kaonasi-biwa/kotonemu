@@ -287,6 +287,28 @@ export default function ShalfeltOS(terminal: Terminal): { options: EmulatorInit,
                                         }
                                     }
                                 }
+                            },
+                            {
+                                name: "pwd",
+                                type: "executable-file",
+                                owner: 0,
+                                group: 0,
+                                mode: 0o777,
+                                deleted: false,
+                                protected: true,
+
+                                async onStart(lib) {
+                                    const args = this.args
+                                    if (args.length === 0) {
+                                        lib.io.write(this.env.PWD, 2);
+                                    } else if (args.length >= 1 && args.every((e) => e == "-P" || e == "-L" || !e.startsWith("-"))) {
+                                        lib.io.write(this.env.PWD, 2);
+                                    } else {
+                                        lib.io.write(`-fsh: pwd: ${args.filter((e) => e != "-P" && e != "-L" && e.startsWith("-"))[0]}: 無効なオプションです\n`, 2);
+                                        lib.io.write(`pwd: 使用法: pwd [-LP]`, 2);
+                                    }
+                                    lib.io.write(`\n`, 2);
+                                }
                             }
                         ]
                     },
