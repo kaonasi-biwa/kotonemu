@@ -121,8 +121,6 @@ export class Process {
      * @param fd ファイルディスクリプタ ID
      */
     private _requireFileDescriptorData(fd: number): Process["fd"][number] {
-        console.log(fd)
-        console.log(this.fd)
         const fdData = this.fd[fd];
         if (!fdData) throw new EBADFD();
         return fdData;
@@ -133,13 +131,12 @@ export class Process {
      * @param flags アクセスモード
      */
     private _createFileDescriptor(pathname: string, flags: OpenFlag): number {
-        console.log(pathname)
         const fdData = {
             pathname,
             offset: 0,
             flags
         };
-        const fdId = Math.max(...Object.keys(this.fd).map(i => parseInt(i))) + 1;
+        const fdId = Math.max(...Object.keys(this.fd).map(i => parseInt(i)),-1) + 1;
         console.log(fdId)
         this.fd[fdId] = fdData;
         console.log(this.fd)
@@ -572,6 +569,9 @@ export class Process {
             // TODO: permission check
 
             const p = this;
+            p.open("/dev/tty1", OpenFlag.READ);
+            p.open("/dev/tty1", OpenFlag.WRITE);
+            p.open("/dev/tty1", OpenFlag.WRITE);
             await entry.onStart.bind(this)({
                 io: {
                     async read(fd = 0, flag = StdReadFlag.ECHO | StdReadFlag.READ_LINE) {

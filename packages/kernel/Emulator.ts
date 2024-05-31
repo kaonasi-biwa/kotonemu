@@ -125,7 +125,7 @@ export class Emulator {
                         }
                     }(this, process, root);
                 }
-            }({"/1":{owner:0,group:0,type: "directory",mode:0o777}}),
+            }({"/0":{owner:0,group:0,type: "directory",mode:0o777},"/1":{owner:0,group:0,type: "directory",mode:0o777},"/2":{owner:0,group:0,type: "directory",mode:0o777}}),
             owner: 0,
             group: 0,
             mode: 0o555
